@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25.10 实验月考应用文写作游戏</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.3);
+            overflow: hidden;
+            border: 10px solid transparent;
+            border-image: linear-gradient(45deg, #8b4513, #d2691e, #8b4513) 1;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .autumn-illustration {
+            width: 96%;
+            max-height: 144px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+            font-weight: bold;
+        }
+        
+        .game-area {
+            padding: 30px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .name-input {
+            width: 80%;
+            padding: 15px;
+            border: 2px solid #d2691e;
+            border-radius: 12px;
+            font-size: 20px;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .phase-container {
+            background: #fff9f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+            border: 2px solid #d2691e;
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .sentence {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f5f5dc;
+            border-radius: 10px;
+            border-left: 5px solid #d2691e;
+            font-weight: bold;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 2px dashed #8b4513;
+            margin: 0 5px;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            background: #fff9f0;
+        }
+        
+        .hint {
+            font-size: 16px;
+            color: #8b4513;
+            font-style: italic;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #d2691e;
+            border-radius: 12px;
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .full-sentence-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #d2691e;
+            border-radius: 12px;
+            font-size: 18px;
+            margin-top: 10px;
+            resize: vertical;
+            font-weight: bold;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(139, 69, 19, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .result-section {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+            background: #fff9f0;
+            border-radius: 15px;
+        }
+        
+        .congratulations {
+            font-size: 36px;
+            color: #8b4513;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #f5deb3, #d2691e);
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .player-name {
+            font-size: 42px;
+            color: #8b4513;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .score-display {
+            font-size: 82px;
+            color: #8b4513;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feedback {
+            font-size: 24px;
+            margin: 20px 0;
+            line-height: 1.6;
+            font-weight: bold;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #f5deb3 0%, #d2691e 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #f5deb3;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #8b4513, #d2691e);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .correct {
+            color: #2e7d32;
+            border-color: #2e7d32 !important;
+        }
+        
+        .incorrect {
+            color: #c62828;
+            border-color: #c62828 !important;
+        }
+        
+        .phase-indicator {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #8b4513;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .word-item {
+            background: #f5deb3;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 2px solid #d2691e;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .word-item:hover {
+            background: #d2691e;
+            color: white;
+        }
+        
+        .word-item.used {
+            background: #d1e7dd;
+            border-color: #0f5132;
+            opacity: 0.6;
+            cursor: default;
+        }
+        
+        .underline {
+            display: inline-block;
+            min-width: 20px;
+            border-bottom: 2px solid #8b4513;
+            margin: 0 2px;
+            text-align: center;
+        }
+        
+        .round-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #8b4513;
+            margin: 10px 0;
+        }
+        
+        .round-badge {
+            background: #d2691e;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .game-complete {
+            font-size: 28px;
+            color: #8b4513;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5deb3;
+            border-radius: 10px;
+        }
+        
+        .restart-btn-large {
+            background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 28px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 6px 15px rgba(255, 87, 34, 0.4);
+            border: 4px solid #ff9800;
+        }
+        
+        .restart-btn-large:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 87, 34, 0.6);
+            background: linear-gradient(135deg, #ff7043 0%, #ffb74d 100%);
+        }
+        
+        .restart-btn-large:active {
+            transform: translateY(2px);
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .game-area {
+                padding: 20px;
+            }
+            
+            .sentence {
+                font-size: 18px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 18px;
+            }
+            
+            .autumn-illustration {
+                max-height: 120px;
+                width: 90%;
+            }
+            
+            .congratulations {
+                font-size: 28px;
+            }
+            
+            .player-name {
+                font-size: 32px;
+            }
+            
+            .score-display {
+                font-size: 62px;
+            }
+            
+            .feedback {
+                font-size: 18px;
+            }
+            
+            .game-complete {
+                font-size: 22px;
+            }
+            
+            .restart-btn-large {
+                padding: 15px 30px;
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>25.10 实验月考应用文写作游戏</h1>
+            <div class="subtitle">Poetry Appreciation Writing Challenge</div>
+        </header>
+        
+        <!-- Autumn illustration placed as an image element -->
+        <img src="https://youke1.picui.cn/s1/2025/10/14/68edbb4265fdf.png" alt="Autumn Illustration" class="autumn-illustration">
+        
+        <div class="game-area">
+            <div class="input-section">
+                <h2>Enter Your Name</h2>
+                <input type="text" class="name-input" id="studentName" placeholder="Type your name here">
+                <button class="btn" id="startBtn">Start Challenge</button>
+            </div>
+            
+            <div id="gameContent" style="display:none;">
+                <!-- Round info -->
+                <div class="round-info" id="roundInfo">Round 1</div>
+                
+                <!-- Progress bar -->
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                
+                <!-- Phase indicator -->
+                <div class="phase-indicator" id="phaseIndicator">Phase 1: Fill in the Blanks</div>
+                
+                <!-- Sentence exercises will be inserted here -->
+                <div id="exercisesContainer"></div>
+                
+                <button class="btn" id="submitBtn" style="display:none;">Check Answers</button>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <div class="congratulations">Congratulations!</div>
+                <div class="player-name" id="playerNameDisplay"></div>
+                <div class="score-display" id="scoreDisplay">0</div>
+                <div class="round-badge" id="roundBadge">Round 1 Completed</div>
+                <div class="game-complete">Game Complete!</div>
+                <div class="feedback" id="feedbackText"></div>
+                <button class="restart-btn-large" id="restartBtn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Model essay sentences
+        const sentences = [
+            "I'm Li Hua and I'm thrilled to share my thoughts on new ways to appreciate poetry.",
+            "I believe poetry appreciation should go beyond traditional reading and shouldn't be limited to one single approach such as silently reading or explaining meanings.",
+            "Poetry can be appreciated through diverse methods like group discussions, creative paintings related to poems, or acting out poems on stage.",
+            "Poetry is a form of art that can be experienced in a variety of different ways.",
+            "A combination of these channels will not only contribute to a deeper understanding of the poems but also bring a more immersive and fascinating experience.",
+            "By embracing these diverse ways, I'm convinced that we will gain a deeper insight into the poems and have a more immersive and enjoyable experience.",
+            "I hope we can try these innovative ways together!"
+        ];
+
+        // Key expressions for each sentence
+        const keyExpressions = [
+            ["thrilled", "share", "thoughts"],
+            ["go beyond", "limited to", "single approach"],
+            ["diverse methods", "group discussions", "creative paintings", "acting out"],
+            ["form of art", "variety of different ways"],
+            ["combination", "channels", "deeper understanding", "immersive", "fascinating experience"],
+            ["embracing", "convinced", "gain a deeper insight", "immersive", "enjoyable experience"],
+            ["innovative ways"]
+        ];
+
+        let currentPhase = 1;
+        let currentSentenceIndex = 0;
+        let score = 0;
+        let totalScore = 0;
+        let currentRound = 1;
+        
+        // Calculate max possible score
+        let maxPossibleScore = 0;
+        for (let i = 0; i < sentences.length; i++) {
+            maxPossibleScore += keyExpressions[i].length * 3; // Phases 1-3
+        }
+
+        // Sound effects
+        function playSound(type) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            if (type === 'correct') {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } else if (type === 'incorrect') {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 400;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'complete') {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                const notes = [523.25, 587.33, 659.25, 698.46, 783.99];
+                let time = audioContext.currentTime;
+                
+                notes.forEach((freq, index) => {
+                    oscillator.frequency.setValueAtTime(freq, time + index * 0.1);
+                });
+                
+                gainNode.gain.setValueAtTime(0.3, time);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+                
+                oscillator.start(time);
+                oscillator.stop(time + 0.5);
+            }
+        }
+
+        // Initialize game
+        document.getElementById('startBtn').addEventListener('click', function() {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                alert('Please enter your name');
+                return;
+            }
+            
+            document.querySelector('.input-section').style.display = 'none';
+            document.getElementById('gameContent').style.display = 'block';
+            
+            startPhase();
+        });
+        
+        function startPhase() {
+            const exercisesContainer = document.getElementById('exercisesContainer');
+            exercisesContainer.innerHTML = '';
+            
+            document.getElementById('phaseIndicator').textContent = `Phase ${currentPhase}: ${getPhaseName(currentPhase)}`;
+            document.getElementById('roundInfo').textContent = `Round ${currentRound}`;
+            
+            if (currentPhase === 1) {
+                createFillInTheBlanksExercise(true); // Phase 1: Fill in the blanks with hints
+                document.getElementById('submitBtn').style.display = 'block';
+            } else if (currentPhase === 2) {
+                createWordBankExercise(); // Phase 2: Word bank challenge
+                document.getElementById('submitBtn').style.display = 'block';
+            } else if (currentPhase === 3) {
+                createFillInTheBlanksExercise(false); // Phase 3: Fill in the blanks without hints
+                document.getElementById('submitBtn').style.display = 'block';
+            }
+            
+            updateProgress();
+        }
+        
+        function getPhaseName(phase) {
+            switch(phase) {
+                case 1: return "Fill in the Blanks (with hints)";
+                case 2: return "Word Bank Challenge";
+                case 3: return "Fill in the Blanks (no hints)";
+                default: return "";
+            }
+        }
+        
+        function createFillInTheBlanksExercise(withHints = true) {
+            const sentence = sentences[currentSentenceIndex];
+            const expressions = keyExpressions[currentSentenceIndex];
+            
+            let processedSentence = sentence;
+            
+            expressions.forEach(expr => {
+                const underlines = createUnderlines(expr);
+                const blank = withHints 
+                    ? `<span class="blank" data-answer="${expr}" data-hint="${getHint(expr)}">${underlines}</span>`
+                    : `<span class="blank" data-answer="${expr}">${underlines}</span>`;
+                processedSentence = processedSentence.replace(expr, blank);
+            });
+            
+            const exerciseDiv = document.createElement('div');
+            exerciseDiv.className = 'phase-container';
+            exerciseDiv.innerHTML = `
+                <div class="phase-header">
+                    <span>Sentence ${currentSentenceIndex + 1} of ${sentences.length}</span>
+                </div>
+                <div class="sentence">${processedSentence}</div>
+                ${withHints ? `<div class="hint">Hint: ${expressions.map(e => getHint(e)).join(', ')}</div>` : ''}
+                <div id="inputsContainer"></div>
+            `;
+            
+            document.getElementById('exercisesContainer').appendChild(exerciseDiv);
+            
+            const inputsContainer = document.getElementById('inputsContainer');
+            expressions.forEach((expr, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'answer-input';
+                input.dataset.expressionIndex = index;
+                input.placeholder = `Expression ${index+1}`;
+                inputsContainer.appendChild(input);
+            });
+        }
+        
+        function createWordBankExercise() {
+            const sentence = sentences[currentSentenceIndex];
+            const expressions = keyExpressions[currentSentenceIndex];
+            
+            let allWords = [];
+            expressions.forEach(expr => {
+                allWords = allWords.concat(expr.split(' '));
+            });
+            
+            const distractors = ['reading', 'writing', 'thinking', 'painting', 'discussion', 'traditional', 'modern', 'simple'];
+            allWords = allWords.concat(distractors);
+            
+            allWords = shuffleArray(allWords);
+            
+            let processedSentence = sentence;
+            
+            expressions.forEach(expr => {
+                const underlines = createUnderlines(expr);
+                processedSentence = processedSentence.replace(expr, `<span class="blank">${underlines}</span>`);
+            });
+            
+            const exerciseDiv = document.createElement('div');
+            exerciseDiv.className = 'phase-container';
+            exerciseDiv.innerHTML = `
+                <div class="phase-header">
+                    <span>Sentence ${currentSentenceIndex + 1} of ${sentences.length}</span>
+                </div>
+                <div class="sentence">${processedSentence}</div>
+                <div class="hint">Use words from the bank below to complete the sentence:</div>
+                <div class="word-bank" id="wordBank"></div>
+                <div id="inputsContainer"></div>
+            `;
+            
+            document.getElementById('exercisesContainer').appendChild(exerciseDiv);
+            
+            // Create input containers first
+            const inputsContainer = document.getElementById('inputsContainer');
+            expressions.forEach((expr, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'answer-input';
+                input.dataset.expressionIndex = index;
+                input.dataset.expectedWords = expr.split(' ').length;
+                input.placeholder = `Expression ${index+1} (${expr.split(' ').length} word${expr.split(' ').length > 1 ? 's' : ''})`;
+                inputsContainer.appendChild(input);
+            });
+            
+            const wordBank = document.getElementById('wordBank');
+            allWords.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                wordElement.textContent = word;
+                wordElement.addEventListener('click', function() {
+                    if (!this.classList.contains('used')) {
+                        // Find the first input that doesn't have enough words yet
+                        const inputs = document.querySelectorAll('.answer-input');
+                        for (let input of inputs) {
+                            const currentWords = input.value.trim().split(/\s+/).filter(w => w.length > 0);
+                            const expectedWords = parseInt(input.dataset.expectedWords);
+                            
+                            if (currentWords.length < expectedWords) {
+                                // Add the word to this input
+                                if (currentWords.length === 0) {
+                                    input.value = this.textContent;
+                                } else {
+                                    input.value = input.value.trim() + ' ' + this.textContent;
+                                }
+                                this.classList.add('used');
+                                break;
+                            }
+                        }
+                    }
+                });
+                wordBank.appendChild(wordElement);
+            });
+        }
+        
+        function getHint(expression) {
+            return expression.split(' ').map(word => word.charAt(0)).join(' ');
+        }
+        
+        function createUnderlines(expression) {
+            const words = expression.split(' ');
+            let underlinesHTML = '';
+            
+            words.forEach(word => {
+                const wordLength = word.length;
+                underlinesHTML += `<span class="underline" style="width: ${wordLength * 10}px;">&nbsp;</span> `;
+            });
+            
+            return underlinesHTML.trim();
+        }
+        
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if (currentPhase === 1 || currentPhase === 2 || currentPhase === 3) {
+                checkFillInTheBlanks();
+            }
+        });
+        
+        function checkFillInTheBlanks() {
+            const inputs = document.querySelectorAll('.answer-input');
+            let allCorrect = true;
+            score = 0;
+            
+            inputs.forEach(input => {
+                const expressionIndex = parseInt(input.dataset.expressionIndex);
+                const correctAnswer = keyExpressions[currentSentenceIndex][expressionIndex].toLowerCase();
+                const userAnswer = input.value.trim().toLowerCase();
+                
+                // Check if answer is correct, with special handling for "deeper" expressions
+                let isCorrect = false;
+                if (userAnswer === correctAnswer) {
+                    isCorrect = true;
+                } else if (correctAnswer.includes('deeper') && userAnswer.includes('deep')) {
+                    // Allow "deep" as alternative to "deeper" in expressions
+                    const modifiedCorrect = correctAnswer.replace('deeper', 'deep');
+                    if (userAnswer === modifiedCorrect) {
+                        isCorrect = true;
+                    }
+                }
+                
+                if (isCorrect) {
+                    input.classList.add('correct');
+                    score++;
+                    playSound('correct');
+                } else {
+                    input.classList.add('incorrect');
+                    allCorrect = false;
+                    playSound('incorrect');
+                    
+                    const correctText = document.createElement('div');
+                    correctText.className = 'hint correct';
+                    correctText.textContent = `Correct: ${correctAnswer}`;
+                    input.parentNode.insertBefore(correctText, input.nextSibling);
+                }
+                
+                input.disabled = true;
+            });
+            
+            totalScore += score;
+            
+            // Move to next phase automatically
+            setTimeout(() => {
+                currentSentenceIndex++;
+                if (currentSentenceIndex >= sentences.length) {
+                    currentSentenceIndex = 0;
+                    currentPhase++;
+                    if (currentPhase > 3) { // Only 3 phases now
+                        showResults();
+                        return;
+                    }
+                }
+                
+                startPhase();
+            }, 1500);
+        }
+        
+        document.getElementById('restartBtn').addEventListener('click', function() {
+            document.getElementById('resultSection').style.display = 'none';
+            document.querySelector('.input-section').style.display = 'block';
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentName').focus();
+            
+            currentRound++;
+            currentPhase = 1;
+            currentSentenceIndex = 0;
+            score = 0;
+            totalScore = 0;
+        });
+        
+        function updateProgress() {
+            const progress = ((currentSentenceIndex + 1) / sentences.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+        
+        function showResults() {
+            document.getElementById('gameContent').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'block';
+            
+            const studentName = document.getElementById('studentName').value.trim();
+            const percentage = Math.round((totalScore / maxPossibleScore) * 100);
+            
+            // Display player name and score prominently
+            document.getElementById('playerNameDisplay').textContent = studentName;
+            document.getElementById('scoreDisplay').textContent = `${percentage}%`;
+            document.getElementById('roundBadge').textContent = `Round ${currentRound} Completed`;
+            
+            // Personalized feedback
+            let feedback = '';
+            if (percentage >= 90) {
+                feedback = `Outstanding performance! You've mastered the key expressions in this model essay.`;
+            } else if (percentage >= 70) {
+                feedback = `Excellent work! You understand most of the important vocabulary and expressions.`;
+            } else if (percentage >= 50) {
+                feedback = `Good effort! You've got some of the key expressions right.`;
+            } else {
+                feedback = `Keep practicing! Focus on the key expressions for improvement.`;
+            }
+            
+            feedback += `<br><br>Your final score: ${totalScore} out of ${maxPossibleScore} points`;
+            document.getElementById('feedbackText').innerHTML = feedback;
+            
+            playSound('complete');
+        }
+    </script>
+</body>
+</html>
